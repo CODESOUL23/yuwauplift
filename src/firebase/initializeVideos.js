@@ -1,6 +1,9 @@
 // src/firebase/initializeVideos.js
 import { db } from './config';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, 
+  getDocs, 
+  writeBatch, 
+  doc , addDoc } from 'firebase/firestore';
 
 const videoData = [
   {
@@ -24,13 +27,24 @@ export const initializeVideosCollection = async () => {
   try {
     const videosRef = collection(db, 'motivationalVideos');
     
+    // Check if videos already exist to avoid duplicates
+    const querySnapshot = await getDocs(videosRef);
+    if (!querySnapshot.empty) {
+      console.log('Videos collection already initialized');
+      return;
+    }
+    
     // Add each video document
-    for (const video of videoData) {
-      await addDoc(videosRef, {
+    const batch = writeBatch(db);
+    videoData.forEach((video) => {
+      const docRef = doc(videosRef);
+      batch.set(docRef, {
         ...video,
         createdAt: new Date()
       });
-    }
+    });
+    
+    await batch.commit();
     console.log('Videos collection initialized successfully');
   } catch (error) {
     console.error('Error initializing videos:', error);

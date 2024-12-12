@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase/config';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { auth, db } from '../firebase/config';
 import './Login.css';
 import bg from '../assets/bg.png';
 import invertedCommas from '../assets/inverted_commas.png';
@@ -15,7 +16,8 @@ function Login() {
   const [isPageHidden, setIsPageHidden] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('student'); // Add this state
+  const [userType, setUserType] = useState('student');
+  const [isLoading, setIsLoading] = useState(false);
   
   const quotes = [
     "It's not whether you get knocked down, it's whether you get back up.",
@@ -34,21 +36,55 @@ function Login() {
     return () => clearInterval(quoteInterval);
   }, [quotes.length]);
 
-  const validateForm = async (event) => {
-    event.preventDefault();
-    
+  const checkOrganizationUser = async (email) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // Redirect based on user type
-      if (userType === 'organization') {
-        navigate('/organization');
-      } else {
-        navigate('/dashboard');
-      }
+      console.log('Checking organization user for email:', email);
+
+      // 1. Case-Insensitive Query:
+      const adminDoc = await getDocs(
+        query(
+          collection(db, 'adminUsers'),
+          where('email', '==', email.toLowerCase()) // Ensure case-insensitive
+        )
+      );
+
+      // 2. Debugging: Log the results
+      console.log('Admin Documents:', adminDoc.docs);
+
+      return !adminDoc.empty;
     } catch (error) {
-      setFormError(error.message);
+      console.error('Error checking organization user:', error);
+      throw error; // Propagate error for handling in validateForm
     }
   };
+
+  const validateForm = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+    setFormError('');
+
+    try {
+      if (userType === 'organization') {
+        const isOrgUser = await checkOrganizationUser(email);
+
+        if (!isOrgUser) {
+          setFormError('This email is not registered as an organization account.');
+          return;
+        }
+      }
+
+      // 3. Authentication:
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate(userType === 'organization' ? '/organization' : '/dashboard');
+
+    } catch (error) {
+      console.error('Login error:', error);
+      setFormError('Authentication failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   const navigateToSignup = () => {
     setIsPageHidden(true);
@@ -76,17 +112,18 @@ function Login() {
         <div className="login-right">
           <h2>Login to Your Account</h2>
           
-          {/* Add toggle buttons */}
           <div className="user-type-toggle">
             <button 
               className={`toggle-btn ${userType === 'student' ? 'active' : ''}`}
               onClick={() => setUserType('student')}
+              disabled={isLoading}
             >
               Student
             </button>
             <button 
               className={`toggle-btn ${userType === 'organization' ? 'active' : ''}`}
               onClick={() => setUserType('organization')}
+              disabled={isLoading}
             >
               Organization
             </button>
@@ -102,6 +139,7 @@ function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required 
+                  disabled={isLoading}
                 />
               </div>
               <div className="form-group password-container">
@@ -112,15 +150,23 @@ function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  disabled={isLoading}
                 />
                 <img
                   src={passwordVisible ? hideIcon : showIcon}
                   alt="Toggle Password Visibility"
-                  onClick={() => setPasswordVisible(!passwordVisible)}
+                  onClick={() => !isLoading && setPasswordVisible(!passwordVisible)}
+                  style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}
                 />
               </div>
               {formError && <div className="error-message">{formError}</div>}
-              <button type="submit" className="login-button">Login</button>
+              <button 
+                type="submit" 
+                className="login-button"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Logging in...' : 'Login'}
+              </button>
             </form>
           </div>
         </div>

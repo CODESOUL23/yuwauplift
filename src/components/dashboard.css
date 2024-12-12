@@ -1,0 +1,280 @@
+:root {
+    --red-damask: #da6e31;
+    --eden: #12435a;
+    --curious-blue: #2692cb;
+    --apple: #529733;
+    --fern: #67b875;
+    --aths-special: #fffff5;
+    --claret: #8a1e3f;
+    --seaweed: #11250e;
+    --cardinal: #c32437;
+    --clam-shell: #cba5ae;
+}
+
+.sidebar1 {
+    background-color: black;
+    height: 100%; /* Make sidebar take full height */
+    width: 120px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 0;
+    margin: 10px; /* Adjust margin for better spacing */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+}
+
+.sidebarpadding1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.sidelogo1 {
+    background: url('favicon.ico') no-repeat center center;
+    background-size: contain;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar-item {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.sidebar-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff; /* Default icon background */
+    border-radius: 50%;
+    position: relative;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.sidebar-link:hover {
+    background-color: var(--red-damask); /* Highlight color on hover */
+    transform: scale(1.1);
+}
+
+.sidebar-link:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 60px;
+    white-space: nowrap;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.icon1 {
+    color: black; /* Icon color */
+    font-size: 24px;
+}
+
+.sidebar-link.active .icon1 {
+    color: #ffffff; /* Active icon color */
+}
+
+.sidebar-link.active {
+    background-color: #1b8800; /* Active icon background */
+}
+
+.dashside {
+    display: flex;
+    background-color: #f3f6f9;
+    font-family: Arial, sans-serif;
+    background: url('bgmain2.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.head1 {
+    margin-left: -78rem;
+    margin-top: 20px;
+    color: white;
+}
+
+.dashcards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Ensure spacing between the cards */
+    padding: 20px;
+}
+
+.card3 {
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    flex: 1;
+    min-width: 300px; /* Set a minimum width for the cards */
+}
+
+.card4{
+    background: linear-gradient(135deg, var(--curious-blue), var(--apple));
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    flex: 1;
+    min-width: 300px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.2);
+    flex-direction: column;
+    align-items: flex-start;
+    overflow-y: auto;
+}
+
+&::-webkit-scrollbar {
+    display: none;
+}
+
+& {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* To-Do List Styles */
+.todo-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 200px;
+    scrollbar-width: none;  /* Hides scroll bar */
+    -ms-overflow-style: none;  /* Hides scroll bar for IE/Edge */
+}
+
+.todo-list::-webkit-scrollbar {
+    display: none;  /* Hides scrollbar for Chrome, Safari, and Opera */
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.todo-item input {
+    margin-right: 10px;
+}
+
+.todo-input {
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--seaweed);
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.todo-input:focus {
+    border-color: var(--curious-blue);
+}
+
+.addbutton1 {
+    padding: 8px 15px;
+    margin-left: 10px;
+    border: none;
+    background-color: var(--red-damask);
+    color: var(--aths-special);
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: none;
+}
+
+.addbutton1:hover {
+    background-color: var(--claret);
+    transform: scale(1.05);
+    box-shadow: none;
+}
+
+.todo-input:focus, .addbutton1:focus {
+    border-color: var(--claret);
+}
+
+.completed {
+    text-decoration: line-through;
+    color: var(--claret);
+}
+
+.dashheader {
+    display: flex; /* Align children in a row */
+    align-items: center; /* Vertical alignment */
+    justify-content: space-between; /* Space between children */
+    padding: 20px; /* Optional padding */
+    gap: 20px; /* Space between mainhead and cardmain */
+}
+
+.mainhead {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.2);
+    height: 400px;
+    width: 1000px;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    margin-left: 10px;
+    flex-direction: column;
+}
+
+.head3{
+    background-color: black;
+    color: white;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    font-size: 3rem;
+}
+
+.mainhead h1 {
+    color: white;
+    text-align: left;
+    font-size: 2.5rem; /* Increase font size */
+    margin: 40px; /* Increase bottom margin */
+    font-weight: bold; /* Make the text bold */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add subtle text shadow */
+}
+
+.mainhead p {
+    color: rgb(0, 0, 0);
+    text-align: left;
+    font-size: 1.2rem;
+    margin-bottom: 20px; /* Add bottom margin */
+    line-height: 1.5; /* Increase line height for better readability */
+    font-style: italic; /* Make the text italic */
+}
+
+.cardmain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 30px;
+    width: 330px;
+    height: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}

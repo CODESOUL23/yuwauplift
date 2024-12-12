@@ -18,7 +18,7 @@ const ChatBot = () => {
   // Initialize Gemini model inside component
   const genAI = new GoogleGenerativeAI("AIzaSyDlgO4qmQKWYiUbk90Cgy70k_Ubo6fJHtk");
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-pro",
+    model: "gemini-1.5-flash",
     generationConfig: {
       temperature: 0.7,
       topK: 40,

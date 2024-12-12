@@ -16,6 +16,9 @@ import Educational from './components/Educational';
 import FirstPage from './components/FirstPage'; // Rename firstpage.js to FirstPage.js
 import Sponsor from './components/Sponsor'; 
 import Organization from './components/organisation';
+import Dashboard from './components/dashboard';
+import Contact from './components/ContactUs';
+import Scholarship from './components/Scholarship';
 
 function App() {
   useEffect(() => {
@@ -37,7 +40,7 @@ function App() {
             {/* Protected routes */}
             <Route path="/dashboard" element={
               <PrivateRoute>
-                <LandingPage />  
+                <Dashboard />  
               </PrivateRoute>
             } />
             <Route path="/survey" element={<PrivateRoute><Survey /></PrivateRoute>} />
@@ -47,6 +50,8 @@ function App() {
             <Route path="/therapy" element={<PrivateRoute><TherapyPage /></PrivateRoute>} />
             <Route path="/educational" element={<PrivateRoute><Educational /></PrivateRoute>} />
             <Route path="/organization" element={<PrivateRoute><Organization /></PrivateRoute>} />
+            <Route path="/contact" element={<PrivateRoute><Contact /></PrivateRoute>} />
+            <Route path="/scholarship" element={<PrivateRoute><Scholarship /></PrivateRoute>} />
             
             {/* Catch all redirect to FirstPage */}
             <Route path="*" element={<Navigate to="/" />} />
